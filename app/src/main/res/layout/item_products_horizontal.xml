@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <import type="android.widget.CompoundButton" />
+
+        <variable
+            name="product"
+            type="com.assetcalculator.data.product.model.Product" />
+
+        <variable
+            name="viewmodel"
+            type="com.assetcalculator.view.assets.ProductsViewModel" />
+    </data>
+
+    <LinearLayout
+        android:background="@color/background_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="4dp"
+            android:elevation="@dimen/card_elevation"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="@{product.product_name}"
+                        android:textColor="@color/text_primary"
+                        android:hint="Title"
+                        app:autoSizeTextType="uniform"
+                        style="@style/my_heading_md"
+                        android:textAllCaps="true"
+                        app:layout_constraintBottom_toTopOf="@+id/textView4"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Price: "
+                            android:textColor="@color/colorGrey"
+                            android:hint="Qty"
+                            style="@style/my_heading_md"
+                            app:layout_constraintBottom_toTopOf="@+id/textView4"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorGrey"
+                            android:hint="97 items"
+                            app:autoSizeTextType="uniform"
+                            app:getmeValue="@{product.product_purchase_price}"
+                            style="@style/my_heading_md"
+                            app:layout_constraintBottom_toTopOf="@+id/textView4"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Qty: "
+                            android:textColor="@color/colorGrey"
+                            android:hint="Qty"
+                            style="@style/my_heading_sm"
+                            app:layout_constraintBottom_toTopOf="@+id/textView4"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:convertToStringQuantity="@{product.product_total_stock}"
+                            android:textColor="@color/colorGrey"
+                            android:hint="0 items"
+                            style="@style/my_heading_sm"
+                            app:layout_constraintBottom_toTopOf="@+id/textView4"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </LinearLayout>
+                </LinearLayout>
+                <ImageButton
+                    android:id="@+id/edit_product"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:onClick="@{() -> viewmodel.openTask(product.product_id)}"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="6dp"
+                    android:background="@color/white"
+                    android:src="@drawable/ic_baseline_edit_24"
+                    ></ImageButton>
+                <ImageButton
+                    android:id="@+id/delete_product"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:onClick="@{()->viewmodel.onClickDelete(product.product_id)}"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="6dp"
+                    android:background="@color/white"
+                    android:src="@drawable/ic_delete_forever_white"
+                    ></ImageButton>
+
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+</layout>
