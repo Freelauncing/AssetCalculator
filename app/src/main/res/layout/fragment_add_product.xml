@@ -9,7 +9,7 @@
 
         <variable
             name="viewmodel"
-            type="com.assetcalculator.view.add.AddProductViewModel" />
+            type="com.pozicointracker.view.add.AddProductViewModel" />
 
     </data>
 

@@ -8,11 +8,11 @@
 
         <variable
             name="product"
-            type="com.assetcalculator.data.product.model.Product" />
+            type="com.pozicointracker.data.product.model.Product" />
 
         <variable
             name="viewmodel"
-            type="com.assetcalculator.view.assets.ProductsViewModel" />
+            type="com.pozicointracker.view.assets.ProductsViewModel" />
     </data>
 
     <LinearLayout

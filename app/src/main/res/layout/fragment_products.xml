@@ -10,16 +10,16 @@
 
         <variable
             name="viewmodel"
-            type="com.assetcalculator.view.assets.ProductsViewModel" />
+            type="com.pozicointracker.view.assets.ProductsViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/allproducts_coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".dashboard.products.allproducts.ProductsFragment">
+        >
 
-        <com.assetcalculator.utility.ScrollChildSwipeRefreshLayout
+        <com.pozicointracker.utility.ScrollChildSwipeRefreshLayout
             android:id="@+id/allproducts_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -36,6 +36,7 @@
                     android:id="@+id/tasks_linear_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="45dp"
                     android:orientation="vertical"
                     >
 
@@ -155,6 +156,7 @@
                         android:src="@drawable/no_product_found"
                         android:contentDescription="no_products_image_content_description" />
                 </LinearLayout>
+
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/floating_action_button"
                     android:layout_width="wrap_content"
@@ -165,9 +167,22 @@
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
                     app:srcCompat="@drawable/ic_baseline_add_24" />
+
+                <com.google.android.gms.ads.AdView
+                    xmlns:ads="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/adView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_centerHorizontal="true"
+                    ads:adSize="BANNER"
+                    ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+                    android:layout_toLeftOf="@id/floating_action_button"
+                    android:layout_alignParentBottom="true" >
+                </com.google.android.gms.ads.AdView>
+
             </RelativeLayout>
 
-        </com.assetcalculator.utility.ScrollChildSwipeRefreshLayout>
+        </com.pozicointracker.utility.ScrollChildSwipeRefreshLayout>
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

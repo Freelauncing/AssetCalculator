@@ -159,4 +159,6 @@ dependencies {
     // Client for retrieving location
     implementation "com.google.android.gms:play-services-location:$version_play_services"
 
+    // AdMob dependency
+    implementation 'com.google.android.gms:play-services-ads:20.5.0'
 }
