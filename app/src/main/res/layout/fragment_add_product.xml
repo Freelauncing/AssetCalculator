@@ -32,39 +32,18 @@
             tools:context=".authentication.signin.SignInFragment"
             tools:ignore="MissingConstraints">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/nameLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:id="@+id/spinner_view"
+                style="@android:style/Widget.Spinner.DropDown"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="16dp"
-                android:background="@android:color/transparent"
-                android:hint="@{viewmodel.productNameText}"
-                android:inputType="text"
-                android:textColorHint="@color/primaryDarkColor"
-                app:boxBackgroundColor="@android:color/white"
-                app:boxStrokeColor="@color/box_stroke_color_green"
-                app:boxStrokeWidth="2dp"
-                app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
-                app:hintTextColor="@color/primaryDarkColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="15"
-                    android:fontFamily="@font/inter_bold"
-                    android:inputType="text"
-                    android:maxLength="25"
-                    android:text="@={viewmodel.productName}"
-                    android:textColor="@color/text_primary"
-                    android:textCursorDrawable="@drawable/box_cursor_green"
-                    android:textSize="@dimen/font_md" />
-            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:id="@+id/purchaseAndSaleLayout"
@@ -73,7 +52,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nameLayout">
+                app:layout_constraintTop_toBottomOf="@+id/spinner_view">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textUnitPurchasePriceLayout"
@@ -104,6 +83,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="15"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:fontFamily="@font/inter_bold"
                         android:inputType="numberDecimal|numberSigned"
                         android:text="@={viewmodel.productPurchasePrice}"
@@ -159,6 +142,7 @@
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
         <com.google.android.material.button.MaterialButton

@@ -1,17 +1,20 @@
 package com.pozicointracker.view.add
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pozicointracker.data.Result
+import com.pozicointracker.data.coin.CoinRepository
+import com.pozicointracker.data.coin.model.Coin
 import com.pozicointracker.data.product.model.Product
 import com.pozicointracker.data.product.ProductRepository
 import com.pozicointracker.utility.Event
 import kotlinx.coroutines.launch
 
 
-class AddProductViewModel(private val productRepository: ProductRepository): ViewModel() {
+class AddProductViewModel(private val productRepository: ProductRepository,private val coinRepository: CoinRepository): ViewModel() {
 
     val LOG_TAG:String = "AddProductViewModel"
 
@@ -25,6 +28,9 @@ class AddProductViewModel(private val productRepository: ProductRepository): Vie
     private val _addProduct = MutableLiveData<Event<Unit>>()
     val addProduct: LiveData<Event<Unit>> = _addProduct
 
+    private val _coinslist = MutableLiveData<Event<List<String>>>()
+    val coinslist: LiveData<Event<List<String>>> = _coinslist
+
 
     // Text Labels
     var productNameText: String? = null
@@ -32,8 +38,32 @@ class AddProductViewModel(private val productRepository: ProductRepository): Vie
     var addProductBtnText: String? = null
     var stockText: String? = null
 
+    var result = mutableListOf<String>()
+    var copy:List<Coin>? = null
+    var index:Int = 0
+
     init {
         initializeLabels()
+    }
+
+    fun initialiseDropDown(boolean: Boolean){
+        viewModelScope.launch{
+            var totalList:Result<List<Coin>> = coinRepository.getCoins(boolean);
+            if (totalList is Result.Success) {
+                copy = totalList.data
+                totalList.data.map {
+                    result.add(it.name)
+                }
+                _coinslist.value = Event(result.toList())
+            }
+        }
+
+    }
+
+    fun getIndex(int: Int){
+        index = int
+        productName.value = copy!!.get(int).name
+        productPurchasePrice.value = copy!!.get(int).current_price.toString()
     }
 
     private fun initializeLabels() {
@@ -50,13 +80,14 @@ class AddProductViewModel(private val productRepository: ProductRepository): Vie
 
 
     fun onclickAddProduct(){
+
         val productName = productName.value
         val productPurchasePrice = productPurchasePrice.value
         val productStock = productStock.value
 
-        if(productName == null || productName.toString() == ""){
+        if(productName == null || productName.toString() == "" || productName == "Search Coin"){
            showSnackbarMessage("Asset Name is Missing")
-       }else if(productPurchasePrice==null || productPurchasePrice.toString() == ""){
+       }else if(productPurchasePrice == null || productPurchasePrice.toString() == ""){
            showSnackbarMessage("Asset Price is Missing")
        } else if(productStock==null || productStock.toString() == ""){
             showSnackbarMessage("Asset Quantity is Missing")
@@ -76,6 +107,7 @@ class AddProductViewModel(private val productRepository: ProductRepository): Vie
                    showSnackbarMessage("saved!")
                    clearInputs()
                    _addProduct.value =  Event(Unit)
+                   initialiseDropDown(false)
                } else {
                    productRepository.saveProduct(
                        Product(
@@ -88,6 +120,7 @@ class AddProductViewModel(private val productRepository: ProductRepository): Vie
                    showSnackbarMessage("saved!")
                    clearInputs()
                    _addProduct.value =  Event(Unit)
+                   initialiseDropDown(false)
                }
 
 

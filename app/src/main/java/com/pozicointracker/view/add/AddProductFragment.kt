@@ -1,14 +1,18 @@
 package com.pozicointracker.view.add
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.getSystemService
@@ -19,13 +23,13 @@ import com.pozicointracker.R
 import com.pozicointracker.databinding.FragmentAddProductBinding
 import com.pozicointracker.utility.EventObserver
 
-
-class AddProductFragment : Fragment() {
+class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private lateinit var viewDataBinding: FragmentAddProductBinding
 
     private val viewModel by viewModels<AddProductViewModel>{
-        AddProductViewModelFactory((requireContext().applicationContext as AssetCalculationApplication).productRepository)
+        AddProductViewModelFactory((requireContext().applicationContext as AssetCalculationApplication).productRepository
+            ,(requireContext().applicationContext as AssetCalculationApplication).coinRepository)
     }
 
     override fun onCreateView(
@@ -41,6 +45,7 @@ class AddProductFragment : Fragment() {
 
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
 
+
         return viewDataBinding.root
     }
 
@@ -50,15 +55,23 @@ class AddProductFragment : Fragment() {
 
         setupSnackbar()
 
+        checkAndStore()
+
         viewModel.addProduct.observe(viewLifecycleOwner, EventObserver{
             buzz(longArrayOf(100, 100, 100, 100, 100, 100))
         })
 
         viewModel.snackbarText.observe(viewLifecycleOwner,EventObserver{
-            Toast.makeText(context,"Asset Saved",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,it,Toast.LENGTH_SHORT).show()
+        })
+
+        viewModel.coinslist.observe(viewLifecycleOwner,EventObserver{
+            val searchmethod = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, it)
+            searchmethod.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            viewDataBinding.spinnerView.adapter = searchmethod
+            viewDataBinding.spinnerView.onItemSelectedListener = this
         })
     }
-
 
     private fun setupSnackbar() {
      //   view?.setupSnackbar(this, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
@@ -94,6 +107,40 @@ class AddProductFragment : Fragment() {
                 buzzer.vibrate(pattern, -1)
             }
         }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        Log.v("Check",viewDataBinding.spinnerView.getItemAtPosition(position).toString())
+        viewModel.getIndex(position)
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
+    }
+
+    fun checkAndStore(){
+        try {
+            if (!check()) {
+                store()
+                viewModel.initialiseDropDown(true)
+            }else{
+                viewModel.initialiseDropDown(false)
+            }
+        }catch (e:Exception){
+
+        }
+    }
+
+    fun store(){
+        val sharedPreference =  requireActivity().getSharedPreferences("CHECK", Context.MODE_PRIVATE)
+        var editor = sharedPreference.edit()
+        editor.putBoolean("FIRSTTIME",true)
+        editor.commit()
+    }
+
+    fun check(): Boolean{
+        val sharedPreference =  requireActivity().getSharedPreferences("CHECK", Context.MODE_PRIVATE)
+        return sharedPreference.getBoolean("FIRSTTIME",false)
     }
 
 }

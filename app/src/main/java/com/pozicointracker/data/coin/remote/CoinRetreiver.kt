@@ -35,6 +35,6 @@ class CoinRetreiver {
     suspend fun getCoinsPlease():List<Coin>{
         return networkInterface.getCoinsFormCoingeko(
             "usd","market_cap_desc",
-            300,1,false)
+            100,1,false)
     }
 }
