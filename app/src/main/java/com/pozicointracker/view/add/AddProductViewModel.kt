@@ -84,6 +84,7 @@ class AddProductViewModel(private val productRepository: ProductRepository,priva
         val productName = productName.value
         val productPurchasePrice = productPurchasePrice.value
         val productStock = productStock.value
+        val coinId = copy!!.get(index).id
 
         if(productName == null || productName.toString() == "" || productName == "Search Coin"){
            showSnackbarMessage("Asset Name is Missing")
@@ -101,7 +102,8 @@ class AddProductViewModel(private val productRepository: ProductRepository,priva
                            (result.data as Product).product_id + 1,
                            productName,
                            String.format("%.5f",productPurchasePrice.toDouble()).toDouble(),
-                           String.format("%.5f",productStock.toDouble()).toDouble()
+                           String.format("%.5f",productStock.toDouble()).toDouble(),
+                           coinId
                        )
                    )
                    showSnackbarMessage("saved!")
@@ -114,7 +116,8 @@ class AddProductViewModel(private val productRepository: ProductRepository,priva
                             1,
                            productName,
                            String.format("%.5f",productPurchasePrice.toDouble()).toDouble(),
-                           String.format("%.5f",productStock.toDouble()).toDouble()
+                           String.format("%.5f",productStock.toDouble()).toDouble(),
+                           coinId
                        )
                    )
                    showSnackbarMessage("saved!")

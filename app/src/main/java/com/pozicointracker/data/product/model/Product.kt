@@ -19,4 +19,7 @@ data class Product @JvmOverloads constructor(
 
     @ColumnInfo(name = "product_total_stock")
     var product_total_stock: Double = 0.0,
+
+    @ColumnInfo(name = "coin_id")
+    var coin_id: String = "",
 )

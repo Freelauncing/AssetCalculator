@@ -26,7 +26,8 @@ class ProductsFragment : Fragment() {
     private lateinit var listAdapter: ProductsAdapter
 
     private val viewModel by viewModels<ProductsViewModel>{
-        ProductsViewModelFactory((requireContext().applicationContext as AssetCalculationApplication).productRepository)
+        ProductsViewModelFactory((requireContext().applicationContext as AssetCalculationApplication).productRepository
+            ,(requireContext().applicationContext as AssetCalculationApplication).coinRepository)
     }
 
     override fun onCreateView(
@@ -147,9 +148,6 @@ class ProductsFragment : Fragment() {
         if (id == R.id.addAsset) {
             val action = ProductsFragmentDirections.actionProductsFragmentToAddProductFragment()
             findNavController().navigate(action)
-            return true
-        }
-        if (id == R.id.addCryptoCoin) {
             return true
         }
         return super.onOptionsItemSelected(item)

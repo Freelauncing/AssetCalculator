@@ -134,13 +134,13 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener {
     fun store(){
         val sharedPreference =  requireActivity().getSharedPreferences("CHECK", Context.MODE_PRIVATE)
         var editor = sharedPreference.edit()
-        editor.putBoolean("FIRSTTIME",true)
+        editor.putBoolean("FIRSTTIM",true)
         editor.commit()
     }
 
     fun check(): Boolean{
         val sharedPreference =  requireActivity().getSharedPreferences("CHECK", Context.MODE_PRIVATE)
-        return sharedPreference.getBoolean("FIRSTTIME",false)
+        return sharedPreference.getBoolean("FIRSTTIM",false)
     }
 
 }

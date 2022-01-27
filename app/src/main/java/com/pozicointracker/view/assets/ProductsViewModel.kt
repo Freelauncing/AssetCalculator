@@ -8,14 +8,20 @@ import com.pozicointracker.utility.Event
 import kotlinx.coroutines.launch
 import com.pozicointracker.data.Result
 import com.pozicointracker.data.Result.Success
+import com.pozicointracker.data.coin.CoinRepository
+import com.pozicointracker.data.coin.model.Coin
 
-class ProductsViewModel(private val productRepository: ProductRepository):ViewModel() {
+class ProductsViewModel(private val productRepository: ProductRepository,private val coinRepository: CoinRepository):ViewModel() {
 
     val LOG_TAG:String = "ProductsViewModel"
 
     private val _forceUpdate = MutableLiveData<Boolean>(false)
 
     val filter_String = MutableLiveData<String>()
+
+    var copy:List<Coin>? = null
+    var prod:List<Product>? = null
+    var newProd = ArrayList<Product>()
 
     private val _items: LiveData<List<Product>> = _forceUpdate.switchMap { forceUpdate ->
         if (forceUpdate) {
@@ -26,6 +32,36 @@ class ProductsViewModel(private val productRepository: ProductRepository):ViewMo
             }
         }
         productRepository.observeProducts().switchMap { filterAndConvertProducts(it) }
+    }
+
+
+    fun fecthProducts(boolean: Boolean){
+        viewModelScope.launch{
+            var ll:Result<List<Coin>> = coinRepository.getCoins(boolean);
+            if (ll is Result.Success) {
+                copy = ll.data
+            }
+
+            var totalList:Result<List<Product>> = productRepository.getProducts(boolean)
+            Log.v("Thulu",totalList.toString())
+            if (totalList is Result.Success) {
+                prod = totalList.data
+            }
+
+            for(p in prod!!){
+                for(c in copy!!){
+                    if(p.coin_id == c.id){
+                        newProd.add(Product(p.product_id,p.product_name,c.current_price,p.product_total_stock,p.coin_id))
+                        break
+                    }
+                }
+            }
+
+            productRepository.deleteAllProducts()
+            newProd.forEach { prod ->
+                    productRepository.saveProduct(prod)
+            }
+        }
     }
 
     val items: LiveData<List<Product>> = _items
@@ -133,6 +169,7 @@ class ProductsViewModel(private val productRepository: ProductRepository):ViewMo
 
     fun refresh() { //
         _forceUpdate.value = true
+        fecthProducts(true)
     }
 
     fun onClickDelete(id:Long) = viewModelScope.launch {

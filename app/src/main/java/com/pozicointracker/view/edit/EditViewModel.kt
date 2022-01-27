@@ -97,6 +97,7 @@ class EditViewModel (private val productRepository: ProductRepository): ViewMode
         val productName = productName.value
         val productPurchasePrice = productPurchasePrice.value
         val productStock = productStock.value
+        val coinId = _product.value!!.coin_id.toString()
 
          if(productName == null || productName.toString() == ""){
             showSnackbarMessage("Asset Name is Missing")
@@ -111,6 +112,7 @@ class EditViewModel (private val productRepository: ProductRepository): ViewMode
                     productName,
                     String.format("%.5f",productPurchasePrice.toDouble()).toDouble(),
                     String.format("%.5f",productStock.toDouble()).toDouble(),
+                    coinId
                     )
             )
 
