@@ -68,7 +68,7 @@ object ServiceLocator {
     private fun createDataBase(context: Context): AssetsDatabase {
         val result = Room.databaseBuilder(
             context.applicationContext,
-            AssetsDatabase::class.java, "assets_kalolll.db"
+            AssetsDatabase::class.java, "assets_pozi_coins.db"
         ).build()
         database = result
         return result

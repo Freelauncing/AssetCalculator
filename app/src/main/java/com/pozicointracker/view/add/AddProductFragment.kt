@@ -70,6 +70,7 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener {
             searchmethod.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             viewDataBinding.spinnerView.adapter = searchmethod
             viewDataBinding.spinnerView.onItemSelectedListener = this
+            viewDataBinding.progressBar.visibility = View.GONE
         })
     }
 
@@ -122,8 +123,10 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener {
         try {
             if (!check()) {
                 store()
+                viewDataBinding.progressBar.visibility = View.VISIBLE
                 viewModel.initialiseDropDown(true)
             }else{
+                viewDataBinding.progressBar.visibility = View.VISIBLE
                 viewModel.initialiseDropDown(false)
             }
         }catch (e:Exception){
@@ -134,13 +137,13 @@ class AddProductFragment : Fragment(), AdapterView.OnItemSelectedListener {
     fun store(){
         val sharedPreference =  requireActivity().getSharedPreferences("CHECK", Context.MODE_PRIVATE)
         var editor = sharedPreference.edit()
-        editor.putBoolean("FIRSTTIM",true)
+        editor.putBoolean("FIRST",true)
         editor.commit()
     }
 
     fun check(): Boolean{
         val sharedPreference =  requireActivity().getSharedPreferences("CHECK", Context.MODE_PRIVATE)
-        return sharedPreference.getBoolean("FIRSTTIM",false)
+        return sharedPreference.getBoolean("FIRST",false)
     }
 
 }
