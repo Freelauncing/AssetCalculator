@@ -6,7 +6,9 @@ import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.pozicointracker.data.coin.model.Coin
 import com.pozicointracker.data.product.model.Product
+import com.pozicointracker.view.cryptocoins.CryptoCoinsAdapter
 
 /**
  * [BindingAdapter]s for the [Product]s list.
@@ -15,6 +17,13 @@ import com.pozicointracker.data.product.model.Product
 fun setItems(listView: RecyclerView, items: List<Product>?) {
     items?.let {
         (listView.adapter as ProductsAdapter).submitList(items)
+    }
+}
+
+@BindingAdapter("app:items")
+fun setItemsCoin(listView: RecyclerView, items: List<Coin>?) {
+    items?.let {
+        (listView.adapter as CryptoCoinsAdapter).submitList(items)
     }
 }
 
@@ -32,6 +41,12 @@ fun totalQuantity(textView: TextView,value:Long) {
 fun convertToStringQuantity(textView: TextView,value:Double) {
     textView.text = String.format("%.5f", value) + " items"
 }
+
+@BindingAdapter("app:convertToStringCoin")
+fun convertToStringCoin(textView: TextView,value:Double) {
+    textView.text = String.format("%.5f", value) + ""
+}
+
 
 @BindingAdapter("app:getmeValue")
 fun convertLongToString(textView: TextView,value:Double) {

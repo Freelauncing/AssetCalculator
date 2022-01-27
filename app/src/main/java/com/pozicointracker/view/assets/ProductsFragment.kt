@@ -1,9 +1,7 @@
 package com.pozicointracker.view.assets
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -17,7 +15,6 @@ import com.pozicointracker.databinding.FragmentProductsBinding
 import com.pozicointracker.utility.EventObserver
 import com.pozicointracker.utility.setupSnackbar
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_products.*
 import timber.log.Timber
 
 class ProductsFragment : Fragment() {
@@ -42,6 +39,8 @@ class ProductsFragment : Fragment() {
             this.viewmodel = viewModel
         }
 
+        setHasOptionsMenu(true)
+
         MobileAds.initialize(context)
 
         viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
@@ -58,10 +57,10 @@ class ProductsFragment : Fragment() {
 
         setupListAdapter()
 
-        viewDataBinding.floatingActionButton.setOnClickListener {
-            val action = ProductsFragmentDirections.actionProductsFragmentToAddProductFragment()
-            findNavController().navigate(action)
-        }
+//        viewDataBinding.floatingActionButton.setOnClickListener {
+//            val action = ProductsFragmentDirections.actionProductsFragmentToAddProductFragment()
+//            findNavController().navigate(action)
+//        }
 
         setUpAd()
     }
@@ -135,4 +134,26 @@ class ProductsFragment : Fragment() {
         val action = ProductsFragmentDirections.actionProductsFragmentToEditFragment(productId)
         findNavController().navigate(action)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.home_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here.
+        val id = item.getItemId()
+
+        if (id == R.id.addAsset) {
+            val action = ProductsFragmentDirections.actionProductsFragmentToAddProductFragment()
+            findNavController().navigate(action)
+            return true
+        }
+        if (id == R.id.addCryptoCoin) {
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+
+    }
+
 }

@@ -3,6 +3,11 @@ package com.pozicointracker.utility
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.room.Room
+import com.pozicointracker.data.coin.CoinDataSource
+import com.pozicointracker.data.coin.CoinRepository
+import com.pozicointracker.data.coin.local.CoinLocalDataSource
+import com.pozicointracker.data.coin.remote.CoinRemoteDataSource
+import com.pozicointracker.data.coin.repository.DefaultCoinRepository
 import com.pozicointracker.data.product.repository.DefaultProductRepository
 import com.pozicointracker.data.product.ProductDataSource
 import com.pozicointracker.data.product.ProductRepository
@@ -22,9 +27,19 @@ object ServiceLocator {
     var  productsRepository: ProductRepository? = null
         @VisibleForTesting set
 
+    @Volatile
+    var  coinRepository: CoinRepository? = null
+        @VisibleForTesting set
+
     fun provideProductsRepository(context: Context): ProductRepository {
         synchronized(this) {
             return  productsRepository ?: createProductsRepository(context)
+        }
+    }
+
+    fun provideCoinRepository(context: Context): CoinRepository {
+        synchronized(this) {
+            return  coinRepository ?: createCoinsRepository(context)
         }
     }
 
@@ -34,15 +49,26 @@ object ServiceLocator {
         return newRepo
     }
 
+    private fun createCoinsRepository(context: Context): CoinRepository {
+        val newRepo = DefaultCoinRepository(CoinRemoteDataSource, createCoinLocalDataSource(context))
+        coinRepository = newRepo
+        return newRepo
+    }
+
     private fun createProductLocalDataSource(context: Context): ProductDataSource {
         val database = database ?: createDataBase(context)
         return ProductLocalDataSource(database.productDao())
     }
 
+    private fun createCoinLocalDataSource(context: Context): CoinDataSource {
+        val database = database ?: createDataBase(context)
+        return CoinLocalDataSource(database.coinDao())
+    }
+
     private fun createDataBase(context: Context): AssetsDatabase {
         val result = Room.databaseBuilder(
             context.applicationContext,
-            AssetsDatabase::class.java, "assets_.db"
+            AssetsDatabase::class.java, "assets_kalol.db"
         ).build()
         database = result
         return result
@@ -61,6 +87,7 @@ object ServiceLocator {
             }
             database = null
             productsRepository = null
+            coinRepository = null
         }
     }
 }

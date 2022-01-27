@@ -1,4 +1,4 @@
-package com.pozicointracker.data.product.model
+package com.pozicointracker.data.coin.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -14,26 +14,29 @@ data class Coin @JvmOverloads constructor(
     @ColumnInfo(name = "symbol")
     var symbol : String ,
 
+    @ColumnInfo(name = "name")
+    var name : String ,
+
     @ColumnInfo(name = "image")
     var image : String ,
 
     @ColumnInfo(name = "current_price")
-    var current_price : Long ,
+    var current_price : Double ,
 
     @ColumnInfo(name = "market_cap")
-    var market_cap : Long ,
+    var market_cap : Double ,
 
     @ColumnInfo(name = "market_cap_rank")
-    var market_cap_rank : Long ,
+    var market_cap_rank : Double ,
 
     @ColumnInfo(name = "total_volume")
-    var total_volume : Long ,
+    var total_volume : Double ,
 
     @ColumnInfo(name = "high_24h")
-    var high_24h : Long ,
+    var high_24h : Double ,
 
     @ColumnInfo(name = "low_24h")
-    var low_24h : Long ,
+    var low_24h : Double ,
 
     @ColumnInfo(name = "price_change_24h")
     var price_change_24h : Double ,
@@ -51,6 +54,6 @@ data class Coin @JvmOverloads constructor(
     var max_supply : Double ,
 
     @ColumnInfo(name = "last_updated")
-    var last_updated : Double ,
+    var last_updated : String ,
 
 )

@@ -71,7 +71,8 @@ class AddProductViewModel(private val productRepository: ProductRepository): Vie
                            productName,
                            String.format("%.5f",productPurchasePrice.toDouble()).toDouble(),
                            String.format("%.5f",productStock.toDouble()).toDouble()
-                       ))
+                       )
+                   )
                    showSnackbarMessage("saved!")
                    clearInputs()
                    _addProduct.value =  Event(Unit)
@@ -82,7 +83,8 @@ class AddProductViewModel(private val productRepository: ProductRepository): Vie
                            productName,
                            String.format("%.5f",productPurchasePrice.toDouble()).toDouble(),
                            String.format("%.5f",productStock.toDouble()).toDouble()
-                       ))
+                       )
+                   )
                    showSnackbarMessage("saved!")
                    clearInputs()
                    _addProduct.value =  Event(Unit)

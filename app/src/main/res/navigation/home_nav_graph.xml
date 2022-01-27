@@ -31,4 +31,8 @@
             android:name="productId"
             app:argType="long" />
     </fragment>
+    <fragment
+        android:id="@+id/cryptoCoinsFragment"
+        android:name="com.pozicointracker.view.cryptocoins.CryptoCoinsFragment"
+        android:label="All Crypto Coins" />
 </navigation>

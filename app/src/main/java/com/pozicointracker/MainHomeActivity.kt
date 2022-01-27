@@ -33,6 +33,7 @@ class MainHomeActivity : AppCompatActivity() {
         appBarConfiguration =
             AppBarConfiguration.Builder(
                 R.id.productsFragment,
+                R.id.cryptoCoinsFragment
                )
                 .setOpenableLayout(drawerLayout)
                 .build()

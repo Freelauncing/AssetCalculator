@@ -12,6 +12,12 @@
         android:title="Add Asset" />
 
     <item
+        android:id="@id/cryptoCoinsFragment"
+        android:icon="@drawable/ic_baseline_currency_bitcoin_24"
+        android:title="All Crypto Coins" />
+
+
+    <item
         android:id="@+id/exit"
         android:icon="@drawable/ic_logout"
         android:title="Exit" />
