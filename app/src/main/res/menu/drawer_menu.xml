@@ -14,7 +14,7 @@
     <item
         android:id="@id/cryptoCoinsFragment"
         android:icon="@drawable/ic_baseline_currency_bitcoin_24"
-        android:title="All Crypto Coins" />
+        android:title="All Coins" />
 
 
     <item
