@@ -1,10 +1,9 @@
 package com.pozicointracker.view.add
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.view.animation.Transformation
+import androidx.lifecycle.*
+import androidx.work.ListenableWorker
 import com.pozicointracker.data.Result
 import com.pozicointracker.data.coin.CoinRepository
 import com.pozicointracker.data.coin.model.Coin
@@ -80,57 +79,95 @@ class AddProductViewModel(private val productRepository: ProductRepository,priva
 
 
     fun onclickAddProduct(){
+        try {
+            val productName = productName.value
+            val myproductPurchasePrice = productPurchasePrice.value
+            val productStock = productStock.value
+            val coinId = copy!!.get(index).id
 
-        val productName = productName.value
-        val productPurchasePrice = productPurchasePrice.value
-        val productStock = productStock.value
-        val coinId = copy!!.get(index).id
+            Log.v("TESTING",myproductPurchasePrice.toString())
 
-        if(productName == null || productName.toString() == "" || productName == "Search Coin"){
-           showSnackbarMessage("Asset Name is Missing")
-       }else if(productPurchasePrice == null || productPurchasePrice.toString() == ""){
-           showSnackbarMessage("Asset Price is Missing")
-       } else if(productStock==null || productStock.toString() == ""){
-            showSnackbarMessage("Asset Quantity is Missing")
-        }else{
+            if (productName == null || productName.toString() == "" || productName == "Search Coin") {
+                showSnackbarMessage("Asset Name is Missing")
+            } else if (myproductPurchasePrice == null || myproductPurchasePrice.toString() == "") {
+                showSnackbarMessage("Asset Price is Missing")
+            } else if (productStock == null || productStock.toString() == "") {
+                showSnackbarMessage("Asset Quantity is Missing")
+            } else {
 
-           viewModelScope.launch {
-              val result = productRepository.getLastProduct(forceUpdate = false)
-               if (result is Result.Success) {
-                   productRepository.saveProduct(
-                       Product(
-                           (result.data as Product).product_id + 1,
-                           productName,
-                           String.format("%.5f",productPurchasePrice.toDouble()).toDouble(),
-                           String.format("%.5f",productStock.toDouble()).toDouble(),
-                           coinId
-                       )
-                   )
-                   showSnackbarMessage("saved!")
-                   clearInputs()
-                   _addProduct.value =  Event(Unit)
-                   initialiseDropDown(false)
-               } else {
-                   productRepository.saveProduct(
-                       Product(
-                            1,
-                           productName,
-                           String.format("%.5f",productPurchasePrice.toDouble()).toDouble(),
-                           String.format("%.5f",productStock.toDouble()).toDouble(),
-                           coinId
-                       )
-                   )
-                   showSnackbarMessage("saved!")
-                   clearInputs()
-                   _addProduct.value =  Event(Unit)
-                   initialiseDropDown(false)
-               }
+                viewModelScope.launch {
+                    var check = false
+                    var allProducts = productRepository.getProducts(false)
+                    val myAllProducts = MutableLiveData<List<Product>>()
+                    if (allProducts is Result.Success) {
+                        myAllProducts.value = allProducts.data!!
+                        myAllProducts.value!!.map {
+                            if (it.product_name == productName && it.coin_id == coinId) {
+                                check = true
+                                updateProduct(
+                                    Product(
+                                        it.product_id,
+                                        productName,
+                                        myproductPurchasePrice.toDouble()
+                                        ,
+
+                                            it.product_total_stock + productStock.toDouble()
+                                        ,
+                                        coinId
+                                    )
+                                )
+                            }
+
+                        }
+                    }
+
+                    if (!check) {
+                        val result = productRepository.getLastProduct(forceUpdate = false)
+                        if (result is Result.Success) {
+                            productRepository.saveProduct(
+                                Product(
+                                    (result.data as Product).product_id + 1,
+                                    productName,
+                                    myproductPurchasePrice.toDouble(),
+                                    productStock.toDouble(),
+                                    coinId
+                                )
+                            )
+                            showSnackbarMessage("saved!")
+                            clearInputs()
+                            _addProduct.value = Event(Unit)
+                            initialiseDropDown(false)
+                        } else {
+                            productRepository.saveProduct(
+                                Product(
+                                    1,
+                                    productName,
+                                    myproductPurchasePrice.toDouble(),
+                                    productStock.toDouble(),
+                                    coinId
+                                )
+                            )
+                            showSnackbarMessage("saved!")
+                            clearInputs()
+                            _addProduct.value = Event(Unit)
+                            initialiseDropDown(false)
+                        }
 
 
-           }
+                    }
+                }
 
+            }
+        }catch (e:Exception){
+            showSnackbarMessage("Something went wrong!")
+        }
+    }
 
-       }
+    private fun updateProduct(product: Product) {
+        viewModelScope.launch {
+            productRepository.saveProduct(product)
+            showSnackbarMessage("Saved!")
+        }
     }
 
     private fun createProduct(newTask: Product) = viewModelScope.launch {
@@ -145,3 +182,24 @@ class AddProductViewModel(private val productRepository: ProductRepository,priva
     }
 
 }
+
+//for (i in it) {
+//    if (i.product_name == productName && i.coin_id == coinId) {
+//        check = true
+//        updateProduct(
+//            Product(
+//                i.product_id,
+//                productName,
+//                String.format(
+//                    "%.5f",
+//                    productPurchasePrice.toDouble()
+//                ).toDouble(),
+//                String.format(
+//                    "%.5f",
+//                    i.product_total_stock + productStock.toDouble()
+//                ).toDouble(),
+//                coinId
+//            )
+//        )
+//    }
+//}

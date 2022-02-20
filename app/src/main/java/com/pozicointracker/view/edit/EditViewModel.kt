@@ -110,8 +110,8 @@ class EditViewModel (private val productRepository: ProductRepository): ViewMode
                 Product(
                     productId!!,
                     productName,
-                    String.format("%.5f",productPurchasePrice.toDouble()).toDouble(),
-                    String.format("%.5f",productStock.toDouble()).toDouble(),
+                    productPurchasePrice.toDouble(),
+                    productStock.toDouble(),
                     coinId
                     )
             )

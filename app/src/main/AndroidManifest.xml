@@ -33,7 +33,7 @@
         <!-- Mikak AdMob App ID: pub-5463461819433677 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
+            android:value="ca-app-pub-5463461819433677~4889694592"/>
     </application>
 
 </manifest>

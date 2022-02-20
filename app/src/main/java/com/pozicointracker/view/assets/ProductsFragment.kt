@@ -67,31 +67,34 @@ class ProductsFragment : Fragment() {
     }
 
     private fun setUpAd() {
-        val adRequest = AdRequest.Builder().build()
 
-        viewDataBinding.adView.loadAd(adRequest)
+        for(i in 0 until 1000) {
+            val adRequest = AdRequest.Builder().build()
 
-        viewDataBinding.adView.adListener = object: AdListener() {
-            override fun onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
+            viewDataBinding.adView.loadAd(adRequest)
+
+            viewDataBinding.adView.adListener = object : AdListener() {
+                override fun onAdLoaded() {
+                    // Code to be executed when an ad finishes loading.
+                }
+
+
+                override fun onAdOpened() {
+                    // Code to be executed when an ad opens an overlay that
+                    // covers the screen.
+                }
+
+                override fun onAdClicked() {
+                    // Code to be executed when the user clicks on an ad.
+                }
+
+                override fun onAdClosed() {
+                    // Code to be executed when the user is about to return
+                    // to the app after tapping on an ad.
+                }
             }
 
-
-            override fun onAdOpened() {
-                // Code to be executed when an ad opens an overlay that
-                // covers the screen.
-            }
-
-            override fun onAdClicked() {
-                // Code to be executed when the user clicks on an ad.
-            }
-
-            override fun onAdClosed() {
-                // Code to be executed when the user is about to return
-                // to the app after tapping on an ad.
-            }
         }
-
     }
 
     private fun setUpListeners() {
